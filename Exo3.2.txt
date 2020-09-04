@@ -1,0 +1,7 @@
+On remplira d'abord les tables Categories, Posts et Countries, car elle n'ont pas de clé étrangères. (Categories s'appelle elle même)
+On peut ensuite remplir Employees, car elle a besoin de Posts qui est déjà remplie.
+On peut aussi remplir Suppliers et Customers, qui ont besoin de Countries qui sont déjà remplies.
+On rempli ensuite Products, qui a besoin de Categories et Suppliers.
+
+Enfin on rempli Orders, qui reprend les ID de Customers.
+Et Orders_details, qui a besoin d'un ID d'Orders et de Products.
