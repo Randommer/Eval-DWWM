@@ -4,4 +4,4 @@ set password=
 set ddb=gescom
 set backup=C:\Backup\
 
-%dir%bin\mysqldump --user=%user% --password=%password% --databases %ddb% > %backup%backup_%ddb%.sql
+%dir%bin\mysqldump --user=%user% --password=%password% --databases %ddb% --routines --triggers > %backup%backup_%ddb%.sql
