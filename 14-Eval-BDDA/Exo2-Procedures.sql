@@ -10,7 +10,7 @@ CREATE PROCEDURE facture(
 )
 BEGIN
     DECLARE ord_verif   varchar(50);
-    DECLARE total_ord   double;
+    /* DECLARE total_ord   double; */
     SET ord_verif = (
         SELECT ord_id
         FROM orders
@@ -20,28 +20,34 @@ BEGIN
     THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Ce numéro de commande n'existe pas";
     ELSE
-        SET total_ord = (
-            SELECT SUM((ode_quantity*ode_unit_price)*((100-ode_discount)/100))
-            FROM orders_details
-            WHERE ode_ord_id = p_ord_id
-        );
-
-        SELECT
-        ord_id AS 'Numéro de commande',
-        ord_order_date AS 'Datée du',
-        CONCAT(cus_firstname, ' ', cus_lastname, ' à ', cus_city) AS 'Client',
-        ode_id AS 'Ligne de commande',
-        CONCAT(pro_ref, ' - ', pro_name, ' - ', pro_color) AS 'Produit',
-        ode_quantity AS 'Quantité produit',
-        CONCAT(ROUND(ode_unit_price, 2), '€') AS 'Prix unitaire',
-        CONCAT(ode_discount, '%') AS 'Remise',
-        CONCAT(ROUND((ode_quantity*ode_unit_price)*((100-ode_discount)/100), 2), '€') AS 'Total produit',
-        CONCAT(ROUND(total_ord, 2), '€') AS 'Total commande'
-        FROM orders_details
-        INNER JOIN orders ON ode_ord_id = ord_id
-        INNER JOIN customers ON ord_cus_id = cus_id
-        INNER JOIN products ON ode_pro_id = pro_id
-        WHERE ord_id = p_ord_id;
+        SELECT commande.ord_id AS 'Numéro de commande',
+        commande.ord_order_date AS 'Datée du',
+        CONCAT(commande.cus_firstname, ' ', commande.cus_lastname, ' à ', commande.cus_city) AS 'Client',
+        produits.ode_id AS 'Ligne de commande',
+        CONCAT(produits.pro_ref, ' - ', produits.pro_name, ' - ', produits.pro_color) AS 'Produit',
+        produits.ode_quantity AS 'Quantité produit',
+        CONCAT(ROUND(produits.ode_unit_price, 2), '€') AS 'Prix unitaire',
+        CONCAT(produits.ode_discount, '%') AS 'Remise',
+        CONCAT(ROUND(totalcomm.total, 2), '€') AS 'Total'
+        FROM (
+            SELECT *
+            FROM orders
+            INNER JOIN customers ON ord_cus_id = cus_id
+            WHERE ord_id = p_ord_id
+        ) commande,
+        (
+            SELECT *
+            FROM orders
+            INNER JOIN orders_details ON ord_id = ode_ord_id
+            INNER JOIN products ON ode_pro_id = pro_id
+            WHERE ord_id = p_ord_id
+        ) produits,
+        (
+            SELECT SUM((ode_quantity*ode_unit_price)*((100-ode_discount)/100)) AS 'total'
+            FROM orders
+            INNER JOIN orders_details ON ord_id = ode_ord_id
+            WHERE ord_id = p_ord_id
+        ) totalcomm;
         
     END IF;
 END |
@@ -50,6 +56,31 @@ DELIMITER ;
 
 CALL facture(52);
 
+
+/* marche, c'est celle que j'ai montré à l'éval
+SET total_ord = (
+    SELECT SUM((ode_quantity*ode_unit_price)*((100-ode_discount)/100))
+    FROM orders_details
+    WHERE ode_ord_id = p_ord_id
+);
+
+SELECT
+ord_id AS 'Numéro de commande',
+ord_order_date AS 'Datée du',
+CONCAT(cus_firstname, ' ', cus_lastname, ' à ', cus_city) AS 'Client',
+ode_id AS 'Ligne de commande',
+CONCAT(pro_ref, ' - ', pro_name, ' - ', pro_color) AS 'Produit',
+ode_quantity AS 'Quantité produit',
+CONCAT(ROUND(ode_unit_price, 2), '€') AS 'Prix unitaire',
+CONCAT(ode_discount, '%') AS 'Remise',
+CONCAT(ROUND((ode_quantity*ode_unit_price)*((100-ode_discount)/100), 2), '€') AS 'Total produit',
+CONCAT(ROUND(total_ord, 2), '€') AS 'Total commande'
+FROM orders_details
+INNER JOIN orders ON ode_ord_id = ord_id
+INNER JOIN customers ON ord_cus_id = cus_id
+INNER JOIN products ON ode_pro_id = pro_id
+WHERE ord_id = p_ord_id;
+*/
 
 /* ne marche pas (3 requêtes)
 SELECT ord_id AS 'Numéro de commande', cus_firstname AS 'Prénom', cus_lastname AS 'Nom', ord_order_date AS 'Daté du'

@@ -32,14 +32,14 @@ BEGIN
     SET stock_p = NEW.pro_stock;
     SET alert_p = NEW.pro_stock_alert;
     SET id_p = NEW.pro_id;
-    SET verif = (
-        SELECT codart
-        FROM commander_articles
-        WHERE codart = id_p
-    );
     IF (stock_p < alert_p)
     THEN
         SET new_qte = alert_p - stock_p;
+        SET verif = (
+            SELECT codart
+            FROM commander_articles
+            WHERE codart = id_p
+        );
         IF ISNULL(verif)
         THEN
             INSERT INTO commander_articles
@@ -53,12 +53,9 @@ BEGIN
             WHERE codart = id_p;
         END IF;
     ELSE
-        IF (verif IS NOT NULL)
-        THEN
-            DELETE
-            FROM commander_articles
-            WHERE codart = id_p;
-        END IF;
+        DELETE
+        FROM commander_articles
+        WHERE codart = id_p;
     END IF;
 END|
 
