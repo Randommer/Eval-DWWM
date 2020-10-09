@@ -5,7 +5,7 @@ class agence
     private $_adresse;
     private $_codePostal;
     private $_ville;
-    private $_modeRestauration;
+
     
     function __construct()
     {
@@ -13,7 +13,7 @@ class agence
         $this->_adresse = null;
         $this->_codePostal = null;
         $this->_ville = null;
-        $this->_modeRestauration = null;
+
     }
 
     public function getNom()
@@ -52,14 +52,14 @@ class agence
         $this->_ville = $ville;
     }
 
-    public function getModeRestauration()
-    {
-        return $this->_modeRestauration;
-    }
-    public function setModeRestauration($restau)
-    {
-        $this->_modeRestauration = $restau;
-    }
+    // public function getModeRestauration()
+    // {
+    //     return $this->_modeRestauration;
+    // }
+    // public function setModeRestauration($restau)
+    // {
+    //     $this->_modeRestauration = $restau;
+    // }
 }
 
 ?>

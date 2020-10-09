@@ -1,31 +1,23 @@
 <?php
 class employe
 {
-    private $_nom;
-    private $_prenom;
-    private $_dateEmbauche;
-    private $_fonction;
-    private $_salaire;
-    private $_service;
-    private $_agence;
-    private $_enfants;
+   private $_nom;
+   private $_prenom;
+   private $_dateEmbauche;
+   private $_fonction;
+   private $_salaire;
+   private $_service;
 
-    public static $nbrEmploye = 0;
+   private $_agence;
 
-    function __construct()
+   public static $nbrEmploye = 0;
+
+   function __construct()
     {
-        $this->_nom = null;
-        $this->_prenom = null;
-        $this->_dateEmbauche = null;
-        $this->_fonction = null;
-        $this->_salaire = null;
-        $this->_service = null;
-        $this->_agence = null;
-        $this->_enfants = null;
         self::$nbrEmploye++;
     }
 
-    public function getNom()
+   public function getNom()
     {
         return $this->_nom;
     }
@@ -45,38 +37,28 @@ class employe
 
     public function getDateEmbauche()
     {
-        return $this->_dateEmbauche;
-    }
-    public function setDateEmbauche($date)
-    {
-        if (is_string($date))
+        if (is_null($this->_dateEmbauche))
         {
-            $this->_dateEmbauche = DateTime::createFromFormat("d/m/Y", $date);
+            return $this->_dateEmbauche;
         }
         else
         {
-            $this->_dateEmbauche = DateTime::createFromFormat("d/m/Y", $date->format("d/m/Y"));
+            return DateTime::createFromFormat("d/m/Y", $this->_dateEmbauche);
         }
+        
+    }
+    public function setDateEmbauche($date)
+    {
+        $this->_dateEmbauche = $date;
     }
 
     public function getAnciennete()
     {
-        $date = new DateTime();
-        $d_embauche = $this->getDateEmbauche();
-        $interval = $d_embauche->diff($date);
-        return intval($interval->format("%y"));
-    }
-
-    public function isChequeVacance()
-    {
-        if ($this->getAnciennete() > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        $dateEmbauche = $this->getDateEmbauche();
+        $aujourdhui = new DateTime();
+        $ecart = $dateEmbauche->diff($aujourdhui);
+        $annees = $ecart->format("%y");
+        return  $ecart->y;
     }
 
     public function getFonction()
@@ -99,8 +81,9 @@ class employe
 
     public function calculerPrime()
     {
-        $prime = $this->getSalaire()*0.05 + $this->getSalaire()*(0.02*$this->getAnciennete());
-        return intval($prime);
+        $salaire5 = $this->getSalaire()*0.05;
+        $salaire2anc = $this->getSalaire()*(0.02 * $this->getAnciennete());
+        return $salaire5 + $salaire2anc;
     }
 
     public function getService()
@@ -121,86 +104,6 @@ class employe
         $this->_agence = $agence;
     }
 
-    public function getEnfants()
-    {
-        return $this->_enfants;
-    }
-    public function setEnfants($enfants)
-    {
-        if (count($enfants) == 0)
-        {
-            $this->_enfants = null;
-        }
-        else
-        {
-            $this->_enfants = $enfants;
-        }
-    }
-
-    public function chequesNoel()
-    {
-        $enfants = $this->getEnfants();
-        if (is_null($enfants))
-        {
-            //return "Non";
-            return array();
-        }
-        else
-        {
-            $primaire = 0;
-            $college = 0;
-            $lycee = 0;
-            foreach ($enfants as $i => $age)
-            {
-                if ($age >= 0 && $age <= 10)
-                {
-                    $primaire++;
-                }
-                if ($age >= 11 && $age <= 15)
-                {
-                    $college++;
-                }
-                if ($age >= 16 && $age <= 18)
-                {
-                    $lycee++;
-                }
-            }
-            if ($primaire == 0 && $college == 0 && $lycee ==0)
-            {
-                //return "Non";
-                return array();
-            }
-            else
-            {
-                /*
-                $cheques = "Oui";
-                if ($primaire != 0)
-                {
-                    $cheques = $cheques.", ".$primaire." chèque(s) de 20 €";
-                }
-                if ($college != 0)
-                {
-                    $cheques = $cheques.", ".$college." chèque(s) de 30 €";
-                }
-                if ($lycee != 0)
-                {
-                    $cheques = $cheques.", ".$lycee." chèque(s) de 50 €";
-                }
-                return $cheques;
-                */
-                return array($primaire, $college, $lycee);
-            }
-        }
-    }
-}
-
-class directeur extends employe
-{
-    public function calculerPrime()
-    {
-        $prime = $this->getSalaire()*0.07 + $this->getSalaire()*(0.03*$this->getAnciennete());
-        return intval($prime);
-    }
 }
 
 ?>

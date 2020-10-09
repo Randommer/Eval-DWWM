@@ -31,7 +31,7 @@ class Employe2Test extends TestCase
         $anciennete = 19;
         $dateTemoin = "12/08/2000";
         $employeATester = new Employe();
-        $employeATester->setDateEmbauche("12/08/2000");
+        $employeATester->setDateEmbauche("12/11/2000");
         $this->assertEquals($anciennete,$employeATester->getAnciennete());
     }
     
