@@ -56,3 +56,37 @@ for (let x = 0; x < atab.length-1; x++) // boucle de parcours des lignes du tabl
 //Affichage du tableau final
 
 console.log(atab); // on affiche le tableau
+
+
+// version dérivée du pseudo-code de Hervé
+
+/* Déclaration des variables */
+const TB = Array(Array(5), Array(5), Array(5), Array(5));
+let LIGNE, COLONNE;
+/* Initialisation du tableau TB avec des zéros */
+for (LIGNE = 0; LIGNE < TB.length; LIGNE++)
+{
+    for (COLONNE = 0; COLONNE < TB[LIGNE].length; COLONNE++)
+    {
+        TB[LIGNE][COLONNE] = 0;
+    }
+};
+/* Initialisation du tableau TB avec des valeurs lues */
+for (LIGNE = 0; LIGNE < TB.length-1; LIGNE++)
+{
+    for (COLONNE = 0; COLONNE < TB[LIGNE].length-1; COLONNE++)
+    {
+        TB[LIGNE][COLONNE] = parseInt(prompt("TB("+(LIGNE+1)+","+(COLONNE+1)+")="));
+    }
+};
+/* Additions en colonne 5 et ligne 4 */
+for (LIGNE = 0; LIGNE < TB.length-1; LIGNE++)
+{
+    for (COLONNE = 0; COLONNE < TB[LIGNE].length-1; COLONNE++)
+    {
+        TB[LIGNE][TB[LIGNE].length-1] = TB[LIGNE][TB[LIGNE].length-1] + TB[LIGNE][COLONNE];
+        TB[TB.length-1][COLONNE] = TB[TB.length-1][COLONNE] + TB[LIGNE][COLONNE];
+    }
+};
+
+console.table(TB);
