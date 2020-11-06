@@ -47,10 +47,10 @@ for (let x = 0; x < atab.length-1; x++) // boucle de parcours des lignes du tabl
 {
     for (let y = 0; y < atab[x].length-1; y++) // boucle de parcours des colonnes d'une ligne, sauf la dernière ligne
     {
-        atab[x][atab[x].length-1] = atab[x][atab[x].length-1]+atab[x][y]; // on ajoute la case de coordonnées x,y au total de la ligne x
-        atab[atab.length-1][y] = atab[atab.length-1][y]+atab[x][y]; // on ajoute la case de coordonnées x,y au total de la colonne y
+        atab[x][atab[x].length-1] = atab[x][atab[x].length-1] + atab[x][y]; // on ajoute la case de coordonnées x,y au total de la ligne x
+        atab[atab.length-1][y] = atab[atab.length-1][y] + atab[x][y]; // on ajoute la case de coordonnées x,y au total de la colonne y
     }
-    atab[atab.length-1][atab[atab.length-1].length-1] = atab[atab.length-1][atab[atab.length-1].length-1]+atab[x][atab[atab.length-1].length-1]; // on ajoute le total de la ligne x au total de toutes les cases du tableau
+    atab[atab.length-1][atab[atab.length-1].length-1] = atab[atab.length-1][atab[atab.length-1].length-1] + atab[x][atab[atab.length-1].length-1]; // on ajoute le total de la ligne x au total de toutes les cases du tableau
 };
 
 //Affichage du tableau final
@@ -87,6 +87,7 @@ for (LIGNE = 0; LIGNE < TB.length-1; LIGNE++)
         TB[LIGNE][TB[LIGNE].length-1] = TB[LIGNE][TB[LIGNE].length-1] + TB[LIGNE][COLONNE];
         TB[TB.length-1][COLONNE] = TB[TB.length-1][COLONNE] + TB[LIGNE][COLONNE];
     }
+    TB[TB.length-1][TB[TB.length-1].length-1] = TB[TB.length-1][TB[TB.length-1].length-1] + TB[LIGNE][TB[TB.length-1].length-1];
 };
 
 console.table(TB);
