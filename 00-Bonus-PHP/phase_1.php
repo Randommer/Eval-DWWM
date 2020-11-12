@@ -126,30 +126,3 @@ Placement($Somme, 5, 4);
 echo "<h2>Solution B</h2>\n";
 
 Placement($Somme, 4, 5);
-
-echo "<h1>Zone Test</h1>\n";
-
-function checkBlackBox($word) {
-    $convert = [
-        ['a', 'z', 'e', 'r', 't', 'y',  '3',  '6', 'p', 'q',  '9', '4',  '1', 'o', 'd', 's', 'v', 'g', 'k', 'j'],
-        ['b', 'a', 'f', 's', 'u', 'z', '21', '42', 'q', 'r', '63', '2', '87', 'p', 'e', 't', 'w', 'h', 'l', 'k']];
-    $password = "";
-    for ($i = 0; $i < strlen($word); $i++)
-    {
-        $k = array_search($word{$i}, $convert[0]);
-        if (is_integer($k))
-        {
-            $password = $password.$convert[1][$k];
-        }
-        else
-        {
-            $password = $password."a";
-        }
-    }
-    return $password;
-}
-
-$str = "fakgvhebv";
-echo $str."<br>\n";
-$bool = checkBlackBox($str);
-echo $bool;
