@@ -183,36 +183,36 @@
         for ($i = 0; $i < strlen($word); $i++)
         {
             ////---- avec $convert ----////
-            /*  */
+            /* Avec array_search on cherche si le caractère existe dans la première ligne du tableau (on récupère dans $k, soit le numéro de la case du tableau, soit faux si le caractère n'existe pas dans la table) */
             $k = array_search($word{$i}, $convert[0]);
-            /*  */
+            /* On test si $k est un entier (donc si le caractère existe dans la table de substitution) */
             if (is_integer($k))
             {
-                /*  */
+                /* On concatène notre chaîne cryptée avec le caractère de substitution correspondant dans la seconde ligne du tableau */
                 $password = $password.$convert[1][$k];
             }
-            else /*  */
+            else /* $k n'est pas un entier (donc le caractère n'existe pas dans la table de substitution) */
             {
-                /*  */
+                /* On concatène notre chaîne cryptée avec le caractère par défaut 'a' */
                 $password = $password."a";
             }
             ////----------------------////
 
             ////---- avec $double ----////
-            // /*  */
+            // /* Avec array_key_exists on test si le caractère existe dans notre table de substitution */
             // if (array_key_exists($word{$i}, $double))
             // {
-            //     /*  */
+            //     /* On concatène notre chaîne cryptée avec le caractère de substitution */
             //     $password = $password.$double[$word{$i}];
             // }
-            // else /*  */
+            // else /* Le caractère n'existe pas dans notre table de substitution */
             // {
-            //     /*  */
+            //     /* On concatène notre chaîne cryptée avec le caractère par défaut 'a' */
             //     $password = $password."a";
             // }
             ////----------------------////
         }
 
-        //
+        //On renvoie la chaîne de caractères cryptée complète
         return $password;
     }
