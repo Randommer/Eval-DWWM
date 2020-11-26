@@ -82,7 +82,7 @@ INNER JOIN products ON ode_pro_id = pro_id
 WHERE ord_id = p_ord_id;
 */
 
-/* ne marche pas (3 requêtes)
+/* ne marche pas (3 requêtes) (en fait ça dépend de la version de MySQL, sur 5.7 ça passe pas, sur 8.0 c'est tout bon)
 SELECT ord_id AS 'Numéro de commande', cus_firstname AS 'Prénom', cus_lastname AS 'Nom', ord_order_date AS 'Daté du'
 FROM orders
 INNER JOIN customers ON ord_cus_id = cus_id
